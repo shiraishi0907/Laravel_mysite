@@ -1,0 +1,25 @@
+.statisticscontainer {
+    margin-bottom: 30pt;
+    box-shadow: 2px 2px 4px;
+}
+
+.statisticsinnercontainer {
+    font-weight: bold;
+    border: solid 1px gray;
+    border-radius: 10px 10px;
+
+}
+
+.columnrankname {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.columnrank {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.staticon {
+    text-align: center;
+}

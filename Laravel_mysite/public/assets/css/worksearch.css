@@ -1,0 +1,71 @@
+.worksearchcontainer {
+    margin-bottom: 30pt;
+    box-shadow: 2px 2px 4px;
+}
+
+.kochiraikaga img {
+    width: 100%;
+}
+
+.kochiratitle {
+    margin-left: 5%;
+    font-size: 120%;
+}
+
+.kochiraname {
+    margin-left: 10%;
+    margin-right: 90%;
+    font-size: 180%;
+}
+
+.gojuonclass {
+    opacity: 0;
+}
+
+div[class^="hiragana-"] {
+    margin: 5px;
+    font-size: 15px;
+}
+
+input:checked + label {
+    color: red;
+}
+
+#collapsesearchbuttonid div {
+    padding: 10px;
+}
+
+#fail {
+    text-align: center;
+    font-size: large;
+    color: red;
+    margin-bottom: 10px;
+}
+
+#not-search {
+    text-align: center;
+    font-size: large;
+    color: red;
+    margin-bottom: 10px;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+}
+  
+table tr {
+    border-bottom: solid 1px #eee;
+    cursor: pointer;
+}
+  
+table tr:hover {
+    background-color: #d4f0fd;
+}
+  
+table th,table td{
+    text-align: center;
+    width: 25%;
+    padding: 15px 0;
+}

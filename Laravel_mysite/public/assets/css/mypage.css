@@ -1,0 +1,30 @@
+.mypagecontainer {
+    margin-bottom: 30pt;
+    box-shadow: 2px 2px 4px;
+}
+.icon {
+    width: 30px;
+}
+.title {
+    flex: 1;
+}
+.center {
+    text-align: center;
+}
+.icon {
+    width: 50%;
+}
+.titlename {
+    width: 100%;
+    font-weight: 800;
+    margin: 12px 0 12px 0;
+}
+
+a {
+    display: block;
+}
+
+.explanation {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

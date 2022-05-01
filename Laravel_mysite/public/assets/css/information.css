@@ -1,0 +1,48 @@
+.informationcontainer {
+    margin-bottom: 30pt;
+    box-shadow: 2px 2px 4px;
+}
+
+.informationinnercontainer {
+    margin-top: 10pt;
+    margin-bottom: 10pt;
+    font-weight: bold;
+    border: solid 1px gray;
+    border-radius: 10px 10px;
+
+}
+
+.columnname {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.columndata {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.circle {
+    font-weight: bold;
+    border: solid 1px gray;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 200px;
+    height: 200px;
+    background: white;
+    border-radius: 50%;
+}
+
+.pointimg {
+    vertical-align: middle;
+}
+
+.points {
+    border: solid 1px black;
+    margin-top: 5px;
+    margin-bottom: 162px;
+    margin-left: auto;
+    margin-right: auto;
+}

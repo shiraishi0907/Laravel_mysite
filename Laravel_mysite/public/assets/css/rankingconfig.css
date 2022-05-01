@@ -1,0 +1,73 @@
+    .modal-dialog {
+        margin-top: 70px;
+        margin-bottom: 70px;
+        display: flex;
+        align-items: center;
+        min-height: 70%;
+    }
+    
+    .modalcontainer {
+        margin-top: 70pt;
+        margin-bottom: 70pt;
+        width: 70%;
+        margin: 0 auto;
+    }
+
+    .explainationname {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        font-weight: bold;
+    }
+
+    .questionname {
+        margin-top: 40px;
+        margin-bottom: 40px;
+        font-weight: bold;
+    }
+
+    .footer-button1 {
+        margin-top: 60px;
+    }
+
+    .footer-button2 {
+        margin-top: 20px;
+        margin-bottom: 50px;
+    }
+
+    #emptybutton {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .rankingconfig-word {
+        margin-top: -10pt;
+        margin-bottom: 10pt;
+    }
+
+    .映画 {
+        margin-bottom: 29pt;
+    }
+
+    .漫画 {
+        margin-bottom: 29pt;
+    }
+
+    input[type="checkbox"]{
+        transform: scale(2);
+    }
+
+    .form-check-label {
+        font-size: large;
+    }
+
+    .btn--orange,
+    a.btn--orange {
+        color: #fff;
+        background-color: #eb6100;
+    }
+
+    .btn--orange:hover,
+    a.btn--orange:hover {
+        color: #fff;
+        background: #f56500;
+    }

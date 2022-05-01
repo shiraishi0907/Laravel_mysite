@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+
+class Rankingtablesetting extends Model
+{
+    public function rankingtablesettingModelGet() {
+        $where = [
+            'loginid' => session('loginid')
+        ];
+        $rankingtablesettings = DB::table('rankingtablesettings')->where($where)->get();
+        return $rankingtablesettings;
+    }
+
+    public function rankingtablesettingModelUpdate($rankingsetting,$title,$data) {
+        $set = DB::table('rankingtablesettings');
+        $where = [
+            'loginid' => session('loginid')
+        ];
+        switch ($rankingsetting) {
+            case 'rankingsettingdefaultflag':
+                $update = [
+                    'rankingsetting_default_flag' => $data
+                ];
+                $set->where($where)->update($update);
+                break;
+            case 'work':
+                $update = [
+                    $title => $data
+                ];
+                $set->where($where)->update($update);
+                break;
+        }
+    }
+}

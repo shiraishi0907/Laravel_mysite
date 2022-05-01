@@ -1,0 +1,61 @@
+/*全体*/
+html {
+    text-align: center;
+    font-family: "Comic Sans MS";
+    width: auto;
+}
+
+a {
+    text-decoration: none; 
+}
+
+li {
+    list-style: none;
+}
+
+
+
+.title {
+    display: flex;
+    align-items: center; /* 垂直中心 */
+    justify-content: center; /* 水平中心 */
+}
+.title:before, .title:after {
+    border-top: 1px solid;
+    content: "";
+    width: 3em; /* 線の長さ */
+}
+.title:before {
+    margin-right: 1em; /* 文字の右隣 */
+}
+.title:after {
+    margin-left: 1em; /* 文字の左隣 */
+}
+
+/*ヘッダー全体*/
+header {
+    width: auto;
+    background-color:#FFFFFF;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    border-style: solid;
+}
+
+/*ボディ全体*/
+body {
+    width: auto;
+    margin-top: 150pt;
+}
+
+/*フッター全体*/
+footer {
+    width: auto;
+    text-align: center;
+    margin-top: 500pt;
+    margin-bottom: 500pt;
+    padding-top: 30pt;  
+    padding-bottom: 30pt;  
+    background: #323d49;
+}

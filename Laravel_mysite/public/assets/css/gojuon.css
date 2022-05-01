@@ -1,0 +1,12 @@
+.hiragana {
+    font-weight: 900;
+    font-size: larger;
+}
+.gojuonclass {
+    border: 1px solid;
+}
+
+.card {
+    padding-right: 15px;
+    padding-top: 15px;
+}

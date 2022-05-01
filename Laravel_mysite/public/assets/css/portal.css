@@ -1,0 +1,275 @@
+
+  /* Custom page CSS
+  -------------------------------------------------- */
+  /* Not required for template or sticky footer method. */
+  .container {
+    max-width: 1000px;
+    width: auto;
+    margin : 100px;
+    box-shadow: 2px 2px 4px;
+    padding: 0 30px;
+  }
+
+  .footercontainer {
+    width: auto;
+    max-width: 380px;
+    padding: 0 5px;
+  }
+  .container .text-muted {
+    margin: 20px 0;
+  }
+  .footercontainer .text-muted {
+    margin: 20px 0;
+  }
+  .contentstopcontainer:before {
+    content:"";
+    display: block;
+    padding: 10px; 
+  }
+  .contentstopcontainer {
+    width: 75%;
+    margin: 0 auto;
+    box-shadow: 2px 2px 4px;
+  }
+
+  /*Ranking*/
+  #rank1 {
+    color: gold;
+  }
+  #rank2 {
+    color: silver;
+  }
+  #rank3 {
+    color: #C47022;
+  }
+
+  .upperrankdata {
+    text-align: center;
+    border: solid;
+  }
+  .ranktitle {
+    font-family:"AR P新藝体U";
+    font-size: 1.3em;
+    border: solid;
+  }
+  .upperdata {
+    border: solid;
+  }
+
+  .rankthumbnail {
+    border: solid;
+  }
+
+  .lowerrankdata {
+    padding: 5%;
+    border: solid;
+  }
+
+  .table td.text-center {
+    vertical-align: middle;
+  }
+  
+
+  .contenttopworklist-ul {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contenttopworklist-ul li {
+      display: inline-block;
+      margin: 0 auto;
+  }
+
+
+  /* Footer */
+#footerwrap {
+  width: 100%;
+	padding-top: 60px;
+	padding-bottom: 60px;
+	background: #384452;
+}
+
+#footerwrap p {
+	color: #bfc9d3;
+    font-size: 3mm;
+}
+
+#footerwrap h6 {
+	color: white;
+}
+
+#footerwrap i {
+	font-size: 30px;
+	color: #bfc9d3;
+	padding-right: 25px;
+}
+
+#footerwrap i:hover {
+	color: #00b3fe
+}
+
+  /* Copyrights */
+
+  #copyrights {
+    width: 100%;
+    background: #202b38;
+    padding: 20px 10px;
+    text-align: center;
+  }
+  
+  #copyrights p {
+    margin-bottom: 5px;
+    color: #fff;
+  }
+  
+  #copyrights a {
+    color: #00b3fe;
+  }
+  
+  .credits {
+    font-size: 3mm;
+    color: #fff;
+  }
+  
+/************************************
+** 評価グラフ
+************************************/
+.pb-rating-graph {
+  box-shadow: 0 3px 5px rgba(0, 0, 0, .07);
+  max-width: 700px;
+  margin: 0 auto 2em !important;
+  padding: 2.5em 2em!important;
+  color: #333;
+  background: #fafafa;
+}
+.pb-rating-graph ul {
+  margin: 0!important;
+  padding: 0!important;
+  border: none!important;
+}
+.pb-rating-graph ul li {
+  list-style: none!important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.pb-rating-graph ul li:before {
+  content: unset !important;
+}
+.pb-rating-graph__label {
+  background: #71828A;
+  color: #fff;
+  display: inline-block;
+  padding: 6px 15px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.pb-rating-graph__wrap {
+  display: flex;
+  margin: 20px 0;
+}
+.pb-rating-graph li:last-child .pb-rating-graph__wrap {
+  margin: 20px 0 0;
+}
+.pb-rating-graph__axis {
+  width: 70%;
+  margin-top: 10px;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+.pb-rating-graph__axis:before {
+  content: "";
+  display: inline-block;
+  height: 5px;
+  background: #E3E6E7;
+  width: 100%;
+  position: absolute;
+}
+.pb-rating-graph__basis {
+  width: 15%;
+  color: #71828A;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+}
+.pb-rating-graph__basis-inner {
+  display: inline-block;
+  text-align: left;
+}
+.pb-rating-graph__wrap .pb-rating-graph__basis:first-of-type {
+  text-align: right;
+  padding-right: 15px;
+}
+.pb-rating-graph__wrap .pb-rating-graph__basis:last-of-type {
+  text-align: left;
+  padding-left: 15px;
+}
+.pb-rating-graph__scale {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+  width: 20px;
+  margin-top: 0 !important;
+}
+.pb-rating-graph__scale:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-top: -7px;
+  margin-bottom: 10px;
+  background: #E3E6E7;
+}
+.pb-rating-graph__axis:after, .pb-rating-graph__scale:after {
+  content: unset !important;
+}
+.pb-rating-graph .pb-rating-graph__scale .pb-rating-graph__item {
+  width: 42px;
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  color: #777;
+  text-align: center;
+  padding-top: 5px;
+  margin-top: -10px !important;
+}
+@media screen and (max-width:600px) {
+  .pb-rating-graph {
+    padding: 2em 1em !important;
+  }
+  .pb-rating-graph__axis {
+    width: 60%;
+  }
+  .pb-rating-graph__basis {
+    width: 20%;
+    font-size: 13px;
+    letter-spacing: 0px;
+    line-height: 1.8;
+  }
+  .pb-rating-graph__wrap .pb-rating-graph__basis:first-of-type {
+    padding-right: 7px;
+  }
+  .pb-rating-graph__wrap .pb-rating-graph__basis:last-of-type {
+    padding-left: 7px;
+  }
+  .pb-rating-graph__scale {
+    width: 16px;
+  }
+  .pb-rating-graph__scale:before {
+    width: 16px;
+    height: 16px;
+  }
+  .pb-rating-graph .pb-rating-graph__scale .pb-rating-graph__item {
+    font-size: 12px;
+  }
+  .pb-rating-graph__scale[data-check='true']:before {
+    font-size: 20px;
+  }
+}
+
+.pb-rating-graph__scale[data-check='true']:before {
+  background:#ee8f81;
+}
