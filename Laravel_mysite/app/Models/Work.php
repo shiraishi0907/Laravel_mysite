@@ -16,7 +16,7 @@ class Work extends Model
         $i = 0;
         foreach ($workfilms as $film) {
             //$filmsurl = $film->url;
-            //$filmlists = explode('/',$filmsurl);
+            $filmlists = explode('/',$filmsurl);
             $workall[$i] = $film->title;
             //$workall[$i]["".$filmlists[0].""] = $film->title;
             $i++;
