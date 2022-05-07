@@ -98,7 +98,7 @@
                 @empty(session('loginid'))
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">トップページ</a>
+                            <a class="nav-link" aria-current="page" href="/top">トップページ</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" aria-current="page" href="/login">ログイン</a>
@@ -107,7 +107,7 @@
                 @else
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" aria-current="page" href="/">トップページ</a>
+                            <a class="nav-link" aria-current="page" href="/top">トップページ</a>
                         </li>
                         @if($userid == 2)
                             <li class="nav-item">

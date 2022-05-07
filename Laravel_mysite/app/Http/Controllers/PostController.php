@@ -9,10 +9,12 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Work;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
     public function post(Request $request, User $user, Work $work, Favorite $favorite, Browsehistory $browsehistory) {
+
         if (session('loginid')) { //ログインしている時
             $users = $user->userModelGet(session('loginid'));
             foreach ($users as $ur) {

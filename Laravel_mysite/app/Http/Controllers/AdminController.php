@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Mail\MailController;
+use PragmaRX\Google2FA\Google2FA;
 
 class AdminController extends Controller
 {
@@ -131,5 +132,44 @@ class AdminController extends Controller
         readfile('test.csv');
 
         return view('admin.usersearch', compact('users'));
+    }
+
+    public function adminonetimepass(Request $request, User $user) {
+        //$this->validator($request->all())->validate();
+        
+        $data = $request->all();
+        /**
+         * シークレットキー作成
+         */
+        $g2fa = app('pragmarx.google2fa');
+        $request->session()->flash('google2fa_secret', $data);
+        $data["google2fa_secret"] = $g2fa->generateSecretKey();
+
+        session(['loginid' => 'account']); //削除
+        /**
+         * userテーブルの管理者レコード(secret_keyカラム)にシークレットキー登録
+         */
+        $user->userModelUpdate('loginid',session('loginid'),'secret_key',$data["google2fa_secret"]);
+
+
+        $users = $user->userModelGet(session('loginid'));
+        foreach ($users as $ur) {
+            $loginid = $ur->loginid;
+            $email = $ur->email;
+        }
+
+        // $opturl = "otpauth://totp/" + encodeURIComponent($loginid) + "/?" +
+        // "issuer=" + encodeURIComponent(config('app.')) + "&" +
+        // "secret=" + encodeURIComponent($data["google2fa_secret"]);
+
+        // $QR_img = 'https://chart.apis.google.com/chart?cht=qr&chs=200x200&' + encodeURIComponent($opturl);
+
+        $opturl = "otpauth://totp/Laravel:".$email."/?".
+        "issuer=".config('app.name')."&".
+        "secret=".$data["google2fa_secret"];
+
+        $QR_img = 'https://chart.apis.google.com/chart?cht=qr&chs=300x300&chld=LI0&chl='.$opturl;
+
+        return view('admin.adminonetimepass',compact('QR_img'));
     }
 }

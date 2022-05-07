@@ -13,7 +13,7 @@ use App\Models\Work;
 use App\Models\Attribute;
 use App\Models\Printorderjsid;
 use Illuminate\Support\Facades\Log;
-use mysqli;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -35,7 +35,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    protected $redirectTo = '/top';
 
     /**
      * Create a new controller instance.
@@ -48,18 +48,25 @@ class LoginController extends Controller
     }
 
     public function login(Request $request, User $user) {
-        // 新規作成からの値
-        $loginid = $request->loginid;
+        
+        
 
-        $email = $request->email;
-        $nickname = $request->name;
-        $password = $request->password;
-        $passwordconf = $request->passwordconf;
-        // パスワード設定からの値
-        $newpassword = $request->newpassword;
-        $newpasswordconf = $request->newpasswordconf;
+        //dd(Auth::user());
+        /**
+         * 新規作成画面から遷移
+         * loginid ログインID
+         * email Eメールアドレス
+         * nickname ニックネーム
+         * password パスワード
+         * passwordconf パスワード確認
+         */
+        if ($request->register) { 
+            $loginid = $request->loginid;
+            $email = $request->email;
+            $nickname = $request->name;
+            $password = $request->password;
+            $passwordconf = $request->passwordconf;
 
-        if ($request->register) { //新規作成画面から遷移
             /*パスワード一致した場合、(バリデーションがなければに変更)DBに登録 */
             if (!$user->userModelExist('loginid',$loginid) && $password === $passwordconf) {
                 $user->userModelInsert($loginid,$nickname,$password,$email,1);
@@ -69,20 +76,30 @@ class LoginController extends Controller
             } elseif ($user->userModelExist('loginid',$loginid)) { //すでに入力したログインIDが登録されている場合
                 return redirect('/register');
             }
-        } elseif ($request->passreset) { //パスワード設定から遷移
+        /**
+         * パスワード設定画面から遷移
+         * newpassword 新しいパスワード
+         * newpasswordconf 新しいパスワード確認
+         */
+        } elseif ($request->passreset) { 
+            $newpassword = $request->newpassword;
+            $newpasswordconf = $request->newpasswordconf;
             if ($newpassword === $newpasswordconf) {
                 return view('auth.login');
             } else {
                 return view(); //リダイレクト方法がわからないどうしよう
             }
-        } else {  //トップページのログインリンクから遷移
+        /**
+         * トップページのログインリンクから遷移
+         */
+        } else {  
             return view('auth.login');
         }
     }
 
     public function logout(Request $request) {
         $request->session()->flush();
-        return redirect('/login');
+        return redirect('/top');
     }
 
     public function contentstop(Request $request, Work $work, User $user, Attribute $attribute, Printorderjsid $printorderjsid, Rankingsetting $rankingsetting) {
