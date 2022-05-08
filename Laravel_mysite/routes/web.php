@@ -16,15 +16,25 @@ Route::post('/register', 'App\Http\Controllers\Auth\RegisterController@register'
 
 Route::get('/admin_register/{timestamp}/{hash}', 'App\Http\Controllers\AdminController@adminregister');
 
+// ログインIDをお忘れの場合画面
 Route::get('/loginid_reset', 'App\Http\Controllers\Auth\ForgetController@forgetloginid');
 
+// 送信完了画面&メール送信
 Route::post('/loginid_reset/complete', 'App\Http\Controllers\Auth\ForgetController@forgetloginidcomplete');
 
+// パスワードをお忘れの場合画面
 Route::get('/passwd_reset', 'App\Http\Controllers\Auth\ForgetController@forgetpass');
 
+// 送信完了画面&メール送信
 Route::post('/passwd_reset/complete', 'App\Http\Controllers\Auth\ForgetController@forgetpasscomplete');
 
-Route::post('/passwd_reset/{timestamp}/{hash}','App\Http\Controllers\Auth\ForgetController@passwordreset');
+// リンククリック
+Route::get('/passwd_reset/valid', 'App\Http\Controllers\Mail\MailController@forgetpassmailvalid')->name('passwd_reset.valid');
+
+// 期限切れ
+Route::get('/passwd_reset/invalid', 'App\Http\Controllers\Mail\MailController@forgetpassmailinvalid')->name('passwd_reset.invalid');
+
+//Route::post('/passwd_reset/{timestamp}/{hash}','App\Http\Controllers\Auth\ForgetController@passwordreset');
 
 Route::get('/attribute', 'App\Http\Controllers\MypageController@attribute');
 

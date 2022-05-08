@@ -1,0 +1,3 @@
+ログインIDはこちらです。
+<br>
+reply: {{ $loginid }}
