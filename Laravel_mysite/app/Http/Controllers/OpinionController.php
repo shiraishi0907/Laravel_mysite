@@ -24,10 +24,21 @@ class OpinionController extends Controller
     }
 
     public function opinionconf(Request $request) {
-        $nickname = $request->name;
+        $nickname = $request->nickname;
         $opiniontitle = $request->opiniontitle;
         $opiniongenre = $request->opiniongenre;
         $opinionbody = $request->opinionbody;
+
+        $request->validate([
+            'opiniontitle' => 'required',
+            'opiniongenre' => 'required|max:50',
+            'opinionbody' => 'required|max:250',
+        ],
+        [
+            'opiniontitle.required' => 'ご意見タイトルは必須入力です。',
+            'opiniongenre.required' => 'ご意見ジャンルは必須入力です。',
+            'opinionbody.required' => 'ご意見は必須入力です。',
+        ]);
         return view('auth.opinionconfirmation',compact('nickname','opiniontitle','opiniongenre','opinionbody'));
     }
 

@@ -7,7 +7,7 @@
 
     @include('block.title')
 
-        <form action="/top" method="GET">
+        <form action="/top" method="POST">
             @csrf
             <strong class="text-muted">ログインID</strong>
             <div class="form-group">

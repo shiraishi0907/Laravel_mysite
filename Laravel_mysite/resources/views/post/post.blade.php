@@ -15,9 +15,18 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                     </div>
-                    <input class="form-control" placeholder="ニックネーム" type="text" name="name" value="{{ $postdisplaydata['nickname'] }}" readonly>
+                    <input class="form-control" placeholder="ニックネーム" type="text" name="nickname" value="{{ $postdisplaydata['nickname'] }}" readonly>
                 </div> 
             </div> 
+            @if($errors->has('nickname'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('nickname') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="row">
                 <div class="col">
                     <strong class="text-muted">レビュー作品名</strong>  
@@ -34,6 +43,15 @@
                             </datalist>
                         </div> 
                     </div>
+                    @if($errors->has('workname'))
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->get('workname') as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                 </div>
                 <div class="col">
                     <div class="form-group">
@@ -85,16 +103,34 @@
                 <input id="star10" type="radio" name="poststar" value="1" />
                 <label for="star10"><span class="text">最悪</span>★</label>
             </div>
+            @if($errors->has('poststar'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('poststar') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <strong class="text-muted">レビュー内容</strong>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <textarea class="form-control" name="postbody" rows="5" placeholder="レビュー内容を100文字以内で入力" maxlength="100"></textarea>
+                    <textarea class="form-control" name="postbody" rows="5" placeholder="レビュー内容を250文字以内で入力"></textarea>
                 </div> 
                 <p class="text-danger">※ネタバレになる内容は、お控えいただくようよろしくお願いします。</p>
             </div> 
+            @if($errors->has('postbody'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('postbody') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="form-group">
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block">確認</button>
@@ -102,7 +138,7 @@
             </div>
             <div class="form-group">
                 <div class="text-center">
-                    <a class="btn btn-primary" href="/" role="button">戻る</a>
+                    <a class="btn btn-primary" href="/top" role="button">戻る</a>
                 </div>
             </div>
         </form>

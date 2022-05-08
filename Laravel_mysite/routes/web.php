@@ -6,7 +6,7 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 
 Auth::routes();
 
-Route::get('/top', 'App\Http\Controllers\Auth\LoginController@contentstop'); 
+Route::match(['get','post'], '/top', 'App\Http\Controllers\Auth\LoginController@contentstop'); 
 
 Route::get('/login', 'App\Http\Controllers\Auth\LoginController@login');
 
@@ -33,8 +33,6 @@ Route::get('/passwd_reset/valid', 'App\Http\Controllers\Mail\MailController@forg
 
 // 期限切れ
 Route::get('/passwd_reset/invalid', 'App\Http\Controllers\Mail\MailController@forgetpassmailinvalid')->name('passwd_reset.invalid');
-
-//Route::post('/passwd_reset/{timestamp}/{hash}','App\Http\Controllers\Auth\ForgetController@passwordreset');
 
 Route::get('/attribute', 'App\Http\Controllers\MypageController@attribute');
 

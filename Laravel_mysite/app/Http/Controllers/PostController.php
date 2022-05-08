@@ -65,11 +65,23 @@ class PostController extends Controller
     }
 
     public function postconf(Request $request) {
-        $name = $request->name;
+        $nickname = $request->nickname;
         $workname = $request->workname;
         $poststar = $request->poststar;
         $postbody = $request->postbody;
-        return view('post.postconfirmation',compact('name','workname','poststar','postbody'));
+
+        $request->validate([
+            'workname' => 'required|exists:workfilms,title,workcomics,title,workfilms,title',
+            'poststar' => 'required',
+            'postbody' => 'required|max:250',
+        ],
+        [
+            'workname.required' => 'レビュー作品名は必須入力です。',
+            'poststar.required' => '評価は必須入力です。',
+            'postbody.required' => 'レビュー内容は必須入力です。',
+        ]);
+
+        return view('post.postconfirmation',compact('nickname','workname','poststar','postbody'));
     }
 
     public function postcomplete(Request $request, User $user, Work $work, Post $post) {

@@ -134,27 +134,33 @@ class LoginController extends Controller
             ],
             [
                 'loginid.required' => 'ログインIDは必須入力です。',
-                'loginid.exists' => '入力されたログインIDが見つかりません。',
+                'loginid.exists' => '入力されたログインIDとパスワードのアカウントが見つかりません。', //直す
                 'password.required' => 'パスワードは必須入力です。',
             ]);
 
-            //現在のログインと最終ログインを登録
+            
             session(['loginid' => $loginid]);
 
-            $users = $user->userModelGet(session('loginid'));
+            /**
+             * ログインした際の各カラムの更新
+             * login_number_of_times ログイン回数 1増やす
+             * last_display_login_time 最終ログイン日時 現在ログイン日時に更新
+             * next_display_login_time 現在ログイン日時 現在の日時をセット
+             * updated_at 更新日
+             */
+            $users = $user->userModelGet($loginid);
             foreach ($users as $ur) {
-                $user->userModelUpdate('loginid',session('loginid'),'login_number_of_times',$ur->login_number_of_times + 1);
-                $user->userModelUpdate('loginid',session('loginid'),'last_display_login_time',$ur->next_display_login_time);
-                $user->userModelUpdate('loginid',session('loginid'),'next_display_login_time',date('Y-m-d H:i:s'));
-                $user->userModelUpdate('loginid',session('loginid'),'updated_at',now());
+                $user->userModelUpdate('loginid',$loginid,'login_number_of_times',$ur->login_number_of_times + 1);
+                $user->userModelUpdate('loginid',$loginid,'last_display_login_time',$ur->next_display_login_time);
+                $user->userModelUpdate('loginid',$loginid,'next_display_login_time',date('Y-m-d H:i:s'));
+                $user->userModelUpdate('loginid',$loginid,'updated_at',now());
             }
         /**
          * トップページ画面のヘッダーから遷移
          */
         } else {
-
+            
         }
-
 
         /**
          * おすすめの映画、アニメのタイトル、画像、URL
