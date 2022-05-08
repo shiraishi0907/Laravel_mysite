@@ -89,27 +89,7 @@ class LoginController extends Controller
             $user->userModelInsert($loginid,$nickname,$password,$email,1);
             return view('auth.login');
 
-        /**
-         * パスワード設定画面から遷移
-         * new_password 新しいパスワード
-         */
-        } elseif ($request->passreset) { 
-            $newpassword = $request->new_password;
-
-            $request->validate([
-                'new_password' => 'required|min:8|confirmed',
-                'password_confirmation' => 'required',
-            ],
-            [
-                'new_password.required' => '新しいパスワードは必須入力です。',
-                'new_password.confirmed' => '新しいパスワードと新しいパスワード確認が一致しません。',
-                'password_confirmation.required' => '新しいパスワード確認は必須入力です。',
-            ]);
-            
-            /**
-             * 
-             */
-            return view('contentstop');
+        
         /**
          * トップページのログインリンクから遷移
          */
@@ -124,88 +104,93 @@ class LoginController extends Controller
     }
 
     public function contentstop(Request $request, Work $work, User $user, Attribute $attribute, Printorderjsid $printorderjsid, Rankingsetting $rankingsetting) {
-        $loginid = $request->loginid;
-        $password = $request->password;
-        $user->userModelGet($loginid);
-
-        $request->validate([
-            'loginid' => 'required|exists:users,loginid',
-            'password' => 'required',
-        ],
-        [
-            'loginid.required' => 'ログインIDは必須入力です。',
-            'loginid.exists' => '入力されたログインIDが見つかりません。',
-            'password.required' => 'パスワードは必須入力です。',
-        ]);
-
-
         /**
-         * 各ユーザーによって変更
+         * パスワード設定画面から遷移
+         * new_password 新しいパスワード
+         */
+        if ($request->passreset) { 
+            $newpassword = $request->new_password;
+
+            $request->validate([
+                'new_password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required',
+            ],
+            [
+                'new_password.required' => '新しいパスワードは必須入力です。',
+                'new_password.confirmed' => '新しいパスワードと新しいパスワード確認が一致しません。',
+                'password_confirmation.required' => '新しいパスワード確認は必須入力です。',
+            ]);
+        /**
+         * ログイン画面から遷移
+         */
+        } elseif ($request->login) {
+            $loginid = $request->loginid;
+            $password = $request->password;
+
+            $request->validate([
+                'loginid' => 'required|exists:users,loginid',
+                'password' => 'required',
+            ],
+            [
+                'loginid.required' => 'ログインIDは必須入力です。',
+                'loginid.exists' => '入力されたログインIDが見つかりません。',
+                'password.required' => 'パスワードは必須入力です。',
+            ]);
+
+            //現在のログインと最終ログインを登録
+            session(['loginid' => $loginid]);
+
+            $users = $user->userModelGet(session('loginid'));
+            foreach ($users as $ur) {
+                $user->userModelUpdate('loginid',session('loginid'),'login_number_of_times',$ur->login_number_of_times + 1);
+                $user->userModelUpdate('loginid',session('loginid'),'last_display_login_time',$ur->next_display_login_time);
+                $user->userModelUpdate('loginid',session('loginid'),'next_display_login_time',date('Y-m-d H:i:s'));
+                $user->userModelUpdate('loginid',session('loginid'),'updated_at',now());
+            }
+        /**
+         * トップページ画面のヘッダーから遷移
+         */
+        } else {
+
+        }
+
+        
+        /**
+         * おすすめの映画、アニメのタイトル、画像、URL
          */
         $workfilms = $work->workModelGet('workfilms',NULL,NULL);
         $workanimes = $work->workModelGet('workanimes',NULL,NULL);
 
-        
-
         $i = 1;
         foreach ($workfilms as $work) {
-            $workfilmtitle[$i] = $work->title;
-            $workfilmimg[$i] = $work->img;
-            $workfilmurl[$i] = $work->url;
+            $contentstop['workfilm_title'][$i] = $work->title;
+            $contentstop['workfilm_img'][$i] = $work->img;
+            $contentstop['workfilm_url'][$i] = $work->url;
             $i++;
         }
 
         $i = 1;
         foreach ($workanimes as $work) {
-            $workanimetitle[$i] = $work->title;
-            $workanimeimg[$i] = $work->img;
-            $workanimeurl[$i] = $work->url;
+            $contentstop['workanime_title'][$i] = $work->title;
+            $contentstop['workanime_img'][$i] = $work->img;
+            $contentstop['workanime_url'][$i] = $work->url;
             $i++;
         }
 
-        
         /**
-         * 書き方悪いので直す
+         * モーダル内の質問
          */
-        
-        if (!session('loginid')) { //ログイン
-            if ($request->login) { //ログインする際のバリデーション処理
-                //現在のログインと最終ログインを登録
-                session(['loginid' => $loginid]);
-
-                //モーダル要素用
-                $attributes = $attribute->attributeModelGet();
-                //ランキングタイトル、切り替えボタン用
-                $rankingsettings = $rankingsetting->rankingsettingFlagModelGet();
-
-                foreach ($rankingsettings as $rankingsetting) {
-                    $tabletitle = $rankingsetting->table_title;
-                    $buttonname = $rankingsetting->button_name;
-                }
-
-                $users = $user->userModelGet(session('loginid'));
-                foreach ($users as $ur) {
-                    $user->userModelUpdate('loginid',session('loginid'),'login_number_of_times',$ur->login_number_of_times + 1);
-                    $user->userModelUpdate('loginid',session('loginid'),'last_display_login_time',$ur->next_display_login_time);
-                    $user->userModelUpdate('loginid',session('loginid'),'next_display_login_time',date('Y-m-d H:i:s'));
-                    $user->userModelUpdate('loginid',session('loginid'),'updated_at',now());
-                }
-                return view('contentstop',compact('workfilmtitle','workfilmimg','workfilmurl','workanimetitle','workanimeimg','workanimeurl','attributes','tabletitle','buttonname'));
-            }
-        } else {
-            //モーダル要素用
-            $attributes = $attribute->attributeModelGet();
-            //ランキングタイトル、切り替えボタン用
-            $rankingsettings = $rankingsetting->rankingsettingFlagModelGet();
-
-
-            foreach ($rankingsettings as $rankingsetting) {
-                $tabletitle = $rankingsetting->table_title;
-                $buttonname = $rankingsetting->button_name;
-            }
-
-
-            return view('contentstop',compact('workfilmtitle','workfilmimg','workfilmurl','workanimetitle','workanimeimg','workanimeurl','attributes','tabletitle','buttonname'));
+        $contentstop['attributes'] = $attribute->attributeModelGet();
+        /**
+         * ランキングタイトル、ランキング切り替えの表示
+         */
+        $rankingsettings = $rankingsetting->rankingsettingFlagModelGet();
+        foreach ($rankingsettings as $rankingsetting) {
+            $contentstop['table_title'] = $rankingsetting->table_title;
+            $contentstop['button_name'] = $rankingsetting->button_name;
         }
+
+        
+        return view('contentstop',compact('contentstop'));
     }
 }

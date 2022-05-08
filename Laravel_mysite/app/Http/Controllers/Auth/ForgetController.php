@@ -79,7 +79,7 @@ class ForgetController extends Controller
                 now()->addMinutes(1),
             )
         ];
-
+        //dd($urls);
         $mail = new ForgetPassSendMail($request,$urls);
         Mail::to($email)->send($mail);
         return 'sent';

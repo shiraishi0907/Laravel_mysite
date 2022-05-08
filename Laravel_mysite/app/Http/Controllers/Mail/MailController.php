@@ -12,11 +12,11 @@ class MailController extends Controller
         if (!$request->hasValidSignature()) {
             return redirect()->route('passwd_reset.invalid');
         }
-        return 'valid';
+        return view('auth.passwordreset');
     }
 
     public function forgetpassmailinvalid() {
-        return 'invalid';
+        return view('error.error');
     }
 
 }

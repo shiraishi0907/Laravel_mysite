@@ -2,18 +2,18 @@
 <div class="row">
     <div class="col text-center">
         <div class="rankingconfig-word">
-            @for ($j = 0;$j < count($attributes["q_attribute"][$i]);$j++)
+            @for ($j = 0;$j < count($contentstop['attributes']['q_attribute'][$i]);$j++)
                 <div class="rank-class">
                     <div class="form-check">
-                        @if ($attributes['type_id'][$i] != 'text')
-                            <label class="form-check-label" for="{{ $attributes['attr_id'][$i][$j] }}">
-                            <input class="form-check-input checkattr{{ $i }}" type="{{ $attributes['type_id'][$i] }}" id="{{ $attributes['attr_id'][$i][$j] }}" name="{{ $attributes['name_id'][$i] }}" value="{{ $attributes['attr_id'][$i][$j] }}" onclick="chkButton('check{{ $i }}')">
+                        @if ($contentstop['attributes']['type_id'][$i] != 'text')
+                            <label class="form-check-label" for="{{ $contentstop['attributes']['attr_id'][$i][$j] }}">
+                            <input class="form-check-input checkattr{{ $i }}" type="{{ $contentstop['attributes']['type_id'][$i] }}" id="{{ $contentstop['attributes']['attr_id'][$i][$j] }}" name="{{ $contentstop['attributes']['name_id'][$i] }}" value="{{ $contentstop['attributes']['attr_id'][$i][$j] }}" onclick="chkButton('check{{ $i }}')">
                             &nbsp;
                             &nbsp;
-                            {{ $attributes["q_attribute"][$i][$j] }}</label>
+                            {{ $contentstop['attributes']['q_attribute'][$i][$j] }}</label>
                         @else
                             <div class="form-group">
-                                <input class="form-control" type="{{ $attributes['type_id'][$i] }}" id="{{ $attributes['attr_id'][$i][$j] }}">
+                                <input class="form-control" type="{{ $contentstop['attributes']['type_id'][$i] }}" id="{{ $contentstop['attributes']['attr_id'][$i][$j] }}">
                             </div>
                         @endif
                     </div>
@@ -27,7 +27,7 @@
         @else
             @include('modal.modalbuttonempty')
         @endif
-        @if ($i != count($attributes["q_explain"]))
+        @if ($i != count($contentstop['attributes']['q_explain']))
             @include('modal.modalbuttonnext')
         @else
             @include('modal.modalbuttoncomplete')

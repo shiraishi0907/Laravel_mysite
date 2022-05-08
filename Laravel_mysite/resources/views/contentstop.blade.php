@@ -28,8 +28,8 @@
             <div class="carousel-item active">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
-                        @for ($i = 1;$i <= count($attributes["q_explain"]);$i++)
-                            <div class="modal-class" id='{{ $attributes["modalshow_id_name"][$i] }}'>
+                        @for ($i = 1;$i <= count($contentstop["attributes"]["q_explain"]);$i++)
+                            <div class="modal-class" id='{{ $contentstop["attributes"]["modalshow_id_name"][$i] }}'>
                                 <div class="header">
                                     @include('block.modaltitle')
                                     @include('block.modalendtitle')
@@ -39,8 +39,6 @@
                                 </div>
                             </div>
                         @endfor
-
-                        
                     </div>
                 </div>
             </div>
@@ -88,13 +86,13 @@
         <div class="contentstop-container">
             <article class="card-body">
                 <h2 class="card-title text-center mb-4 mt-1">
-                    <div class="contentstoptitle" id="contentstoptitle">{{ $tabletitle }}</div>
+                    <div class="contentstoptitle" id="contentstoptitle">{{ $contentstop['table_title'] }}</div>
                 </h2>
-                @if(!empty($buttonname))
+                @if(!empty($contentstop['button_name']))
                     <div class="d-flex justify-content-around">
                         <span>{{ $rankingtitleleft }}</span>
                         <span>{{ $rankingtitleright }}</span>
-                        <button type="button" class="btn btn-primary" id="rankingbutton">{{ $buttonname }}</button>
+                        <button type="button" class="btn btn-primary" id="rankingbutton">{{ $contentstop['button_name'] }}</button>
                     </div>
                 @endif
                 <br>
@@ -103,10 +101,10 @@
                         <ul class="contenttopworklist-ul">
                             @for ($i = 1;$i <= 6;$i++)
                                 <li class="contenttopworklist-li">
-                                    <a href="/work_indetail/{{ $workfilmurl[$i] }}" target="_blank">
-                                        <img src="{{ $workfilmimg[$i] }}" alt="{{ $workfilmimg[$i] }}" width="200" height="150">
+                                    <a href="/work_indetail/{{ $contentstop['workfilm_url'][$i] }}" target="_blank">
+                                        <img src="{{ $contentstop['workfilm_img'][$i] }}" alt="{{ $contentstop['workfilm_img'][$i] }}" width="200" height="150">
                                         <div class="worktitlename">
-                                            {{ $workfilmtitle[$i] }}
+                                            {{ $contentstop['workfilm_title'][$i] }}
                                         </div>
                                     </a>
                                 </li>
@@ -196,8 +194,8 @@
             @endempty
         </div>
 
-    </article>
-    </div>
+        </article>
+        </div>
     </section>
 
 
