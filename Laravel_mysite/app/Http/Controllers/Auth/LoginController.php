@@ -88,19 +88,20 @@ class LoginController extends Controller
              */
             $user->userModelInsert($loginid,$nickname,$password,$email,1);
             return view('auth.login');
-
-        
         /**
          * トップページのログインリンクから遷移
+         * すでにログインしている場合トップページにリダイレクト
          */
         } else {  
+            if (session('loginid')) return redirect('/top');
+
             return view('auth.login');
         }
     }
 
     public function logout(Request $request) {
         $request->session()->flush();
-        return view('contentstop');
+        return redirect('/top');
     }
 
     public function contentstop(Request $request, Work $work, User $user, Attribute $attribute, Printorderjsid $printorderjsid, Rankingsetting $rankingsetting) {
@@ -154,7 +155,7 @@ class LoginController extends Controller
 
         }
 
-        
+
         /**
          * おすすめの映画、アニメのタイトル、画像、URL
          */
@@ -183,14 +184,19 @@ class LoginController extends Controller
         $contentstop['attributes'] = $attribute->attributeModelGet();
         /**
          * ランキングタイトル、ランキング切り替えの表示
+         * ログインしているユーザーが設定しているデフォルト表示を取得
+         * 未ログインユーザーは「全ユーザーのおすすめランキング」をデフォルト表示にする
          */
-        $rankingsettings = $rankingsetting->rankingsettingFlagModelGet();
+        if (session('loginid')) {
+            $rankingsettings = $rankingsetting->rankingsettingFlagModelGet(session('loginid'));
+        } else {
+            $rankingsettings = $rankingsetting->rankingsettingFlagModelGet('Guest');
+        }
         foreach ($rankingsettings as $rankingsetting) {
             $contentstop['table_title'] = $rankingsetting->table_title;
             $contentstop['button_name'] = $rankingsetting->button_name;
         }
 
-        
         return view('contentstop',compact('contentstop'));
     }
 }

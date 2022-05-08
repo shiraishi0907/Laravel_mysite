@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class Rankingsetting extends Model
 {
-    public function rankingsettingFlagModelGet() {
+    public function rankingsettingFlagModelGet($loginid) {
         $where = [
-            'loginid' => session('loginid')
+            'loginid' => $loginid
         ];
         $rankingflagconfigs = DB::table('rankingsettings')
             ->join('rankingtablesettings',function($join) use ($where) {

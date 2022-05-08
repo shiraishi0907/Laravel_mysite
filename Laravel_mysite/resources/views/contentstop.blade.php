@@ -82,7 +82,6 @@
     ?>
     
     <section class="allusersection" id="allusersection">
-
         <div class="contentstop-container">
             <article class="card-body">
                 <h2 class="card-title text-center mb-4 mt-1">
