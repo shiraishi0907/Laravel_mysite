@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Mail\MailController;
-use App\Http\Requests\ForgetRequest;
 
 
 class ForgetController extends Controller
@@ -43,7 +42,7 @@ class ForgetController extends Controller
         return view('auth.forgetloginid');
     }
 
-    public function forgetloginidcomplete(Request $request, ForgetRequest $forgetrequest) {
+    public function forgetloginidcomplete(Request $request) {
         $isvalid = array(
             'request' => $forgetrequest,
         );
@@ -59,6 +58,15 @@ class ForgetController extends Controller
 
     public function forgetpasscomplete(Request $request) {
         $email = $request->email;
+
+        $request->validate([
+            'email' => 'required|unique:users',
+        ],
+        [
+            'email.required' => 'Eメールアドレスは必須入力です。',
+            'email.unique' => '入力されたEメールアドレスはすでに登録されています。',
+        ]);
+
         $mail = new MailController;
         $mail->mail('passreset',NULL,$email,NULL);
         return view('auth.forgetpasscomplete',compact('email'));

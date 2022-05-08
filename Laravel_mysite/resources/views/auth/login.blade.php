@@ -15,28 +15,36 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                     </div>
-                    <input class="form-control @if($errors->has('loginid')) is-invalid @endif" placeholder="ログインID" type="text" name="loginid" value="{{ old('loginid') }}" required>
-                    @if($errors->has('loginid'))
-                        <div class="invalid-feedback">{{ $errors->first('loginid') }}</div>
-                    @else
-                        <div class="invalid-feedback">必須入力です。</div>
-                    @endif
+                    <input class="form-control" placeholder="ログインID" type="text" name="loginid" value="{{ old('loginid') }}">
                 </div> 
             </div> 
+            @if($errors->has('loginid'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('loginid') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <strong class="text-muted">パスワード</strong>
             <div class="form-group">
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control @if($errors->has('password')) is-invalid @endif" placeholder="パスワード" type="password" name="password" required>
-                    @if($errors->has('password'))
-                        <div class="invalid-feedback">{{ $errors->first('password') }}</div>
-                    @else
-                        <div class="invalid-feedback">必須項目です。</div>
-                    @endif
+                    <input class="form-control" placeholder="パスワード" type="password" name="password">
                 </div> 
             </div> 
+            @if($errors->has('password'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('password') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-block">ログイン</button>
                 <input type="hidden" name="login" value="on">

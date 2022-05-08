@@ -18,6 +18,15 @@
                     <input class="form-control" placeholder="Eメールアドレス" type="email" name="email">
                 </div> 
             </div> 
+            @if($errors->has('email'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('email') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="form-group">
                 <div class="input-group">
                     <p class="text-danger">※パスワード設定用URLをメールを送りますので、登録したメールアドレスを入力してください。</p>

@@ -6,9 +6,9 @@ use Illuminate\Routing\Middleware\ValidateSignature;
 
 Auth::routes();
 
-Route::match(['get', 'post'], '/', 'App\Http\Controllers\Auth\LoginController@contentstop'); //あまり使わない方法
+Route::get('/top', 'App\Http\Controllers\Auth\LoginController@contentstop'); 
 
-Route::post('/login', 'App\Http\Controllers\Auth\LoginController@login');
+Route::get('/login', 'App\Http\Controllers\Auth\LoginController@login');
 
 Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
 
@@ -24,7 +24,7 @@ Route::get('/passwd_reset', 'App\Http\Controllers\Auth\ForgetController@forgetpa
 
 Route::post('/passwd_reset/complete', 'App\Http\Controllers\Auth\ForgetController@forgetpasscomplete');
 
-Route::get('/passwd_reset/{timestamp}/{hash}','App\Http\Controllers\Auth\ForgetController@passwordreset');
+Route::post('/passwd_reset/{timestamp}/{hash}','App\Http\Controllers\Auth\ForgetController@passwordreset');
 
 Route::get('/attribute', 'App\Http\Controllers\MypageController@attribute');
 
@@ -83,6 +83,8 @@ Route::post('/adminlink/complete', 'App\Http\Controllers\AdminController@adminli
 Route::post('/user_search/usersearch', 'App\Http\Controllers\AdminController@usersearchAjax');
 
 Route::get('/csv', 'App\Http\Controllers\AdminController@getcsv');
+
+Route::get('/adminonetimepass', 'App\Http\Controllers\AdminController@adminonetimepass');
 
 Route::get('/adminaccount', 'App\Http\Controllers\AdminController@adminaccount');
 

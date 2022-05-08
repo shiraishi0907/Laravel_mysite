@@ -15,7 +15,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="新しいパスワード" type="password" name="newpassword">
+                    <input class="form-control" placeholder="新しいパスワード" type="password" name="new_password">
                 </div> 
             </div> 
             <strong class="text-muted">新しいパスワード確認</strong>
@@ -24,7 +24,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="新しいパスワード確認" type="password" name="newpasswordconf">
+                    <input class="form-control" placeholder="新しいパスワード確認" type="password" name="password_confirmation">
                 </div> 
             </div> 
             <div class="form-group">

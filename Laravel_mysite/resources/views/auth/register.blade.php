@@ -1,77 +1,112 @@
-@extends('layouts.app')
+<?php
+    $title = 'アカウント新規作成';
+?>
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Register') }}</div>
+@include('include.header')
 
-                <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
-                        @csrf
+    @include('block.title')
 
-                        <div class="row mb-3">
-                            <label for="name" class="col-md-4 col-form-label text-md-end">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
-
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
-                                @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirm Password') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Register') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+        <form action="/login" method="POST">
+            @csrf
+            <strong class="text-muted">ログインID</strong>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="ログインID" type="text" name="loginid">
+                </div> 
+            </div> 
+            @if($errors->has('loginid'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('loginid') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <strong class="text-muted">Eメールアドレス</strong>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Eメールアドレス" type="email" name="email">
+                </div> 
+            </div> 
+            @if($errors->has('email'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('email') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <strong class="text-muted">ニックネーム</strong>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fa fa-user"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="ニックネーム" type="text" name="nickname">
+                </div> 
+            </div> 
+            @if($errors->has('nickname'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('nickname') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <strong class="text-muted">パスワード</strong>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" placeholder="パスワード" type="password" name="password">
+                </div> 
+            </div> 
+            @if($errors->has('password'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('password') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <strong class="text-muted">パスワード確認</strong>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
+                    </div>
+                    <input class="form-control" placeholder="パスワード確認" type="password" name="password_confirmation">
+                </div> 
+            </div> 
+            @if($errors->has('password_confirmation'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('password_confirmation') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">アカウント登録</button>
+                <input type="hidden" name="register" value="user">
+            </div> 
+            <div class="form-group">
+                <div class="text-center">
+                    <a class="btn btn-primary" href="/login" role="button">戻る</a>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-@endsection
+        </form>
+    
+    @include('block.endtitle')

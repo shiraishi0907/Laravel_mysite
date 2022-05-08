@@ -14,6 +14,8 @@ use App\Models\Attribute;
 use App\Models\Printorderjsid;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class LoginController extends Controller
 {
@@ -48,9 +50,6 @@ class LoginController extends Controller
     }
 
     public function login(Request $request, User $user) {
-        
-        
-
         //dd(Auth::user());
         /**
          * 新規作成画面から遷移
@@ -58,37 +57,59 @@ class LoginController extends Controller
          * email Eメールアドレス
          * nickname ニックネーム
          * password パスワード
-         * passwordconf パスワード確認
          */
         if ($request->register) { 
             $loginid = $request->loginid;
             $email = $request->email;
-            $nickname = $request->name;
+            $nickname = $request->nickname;
             $password = $request->password;
-            $passwordconf = $request->passwordconf;
 
-            /*パスワード一致した場合、(バリデーションがなければに変更)DBに登録 */
-            if (!$user->userModelExist('loginid',$loginid) && $password === $passwordconf) {
-                $user->userModelInsert($loginid,$nickname,$password,$email,1);
-                return view('auth.login');
-            } elseif ($password !== $passwordconf) { //パスワード不一致の場合、エラーメッセージを出す 
-                return redirect('/register');
-            } elseif ($user->userModelExist('loginid',$loginid)) { //すでに入力したログインIDが登録されている場合
-                return redirect('/register');
-            }
+            $request->validate([
+                'loginid' => 'required|unique:users',
+                'email' => 'required|unique:users',
+                'nickname' => 'required',
+                'password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required',
+            ],
+            [
+                'loginid.required' => 'ログインIDは必須入力です。',
+                'loginid.unique' => '入力されたログインIDはすでに登録されています。',
+                'email.required' => 'Eメールアドレスは必須入力です。',
+                'email.unique' => '入力されたEメールアドレスはすでに登録されています。',
+                'nickname.required' => 'ニックネームは必須入力です。',
+                'password.confirmed' => 'パスワードとパスワード確認が一致しません。',
+                'password.required' => 'パスワードは必須入力です。',
+                'password_confirmation.required' => 'パスワード確認は必須入力です。',
+            ]);
+
+            /**
+             * usersテーブルに登録
+             * 一般ユーザーで登録
+             */
+            $user->userModelInsert($loginid,$nickname,$password,$email,1);
+            return view('auth.login');
+
         /**
          * パスワード設定画面から遷移
-         * newpassword 新しいパスワード
-         * newpasswordconf 新しいパスワード確認
+         * new_password 新しいパスワード
          */
         } elseif ($request->passreset) { 
-            $newpassword = $request->newpassword;
-            $newpasswordconf = $request->newpasswordconf;
-            if ($newpassword === $newpasswordconf) {
-                return view('auth.login');
-            } else {
-                return view(); //リダイレクト方法がわからないどうしよう
-            }
+            $newpassword = $request->new_password;
+
+            $request->validate([
+                'new_password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required',
+            ],
+            [
+                'new_password.required' => '新しいパスワードは必須入力です。',
+                'new_password.confirmed' => '新しいパスワードと新しいパスワード確認が一致しません。',
+                'password_confirmation.required' => '新しいパスワード確認は必須入力です。',
+            ]);
+            
+            /**
+             * 
+             */
+            return view('contentstop');
         /**
          * トップページのログインリンクから遷移
          */
@@ -99,13 +120,24 @@ class LoginController extends Controller
 
     public function logout(Request $request) {
         $request->session()->flush();
-        return redirect('/top');
+        return view('contentstop');
     }
 
     public function contentstop(Request $request, Work $work, User $user, Attribute $attribute, Printorderjsid $printorderjsid, Rankingsetting $rankingsetting) {
         $loginid = $request->loginid;
         $password = $request->password;
         $user->userModelGet($loginid);
+
+        $request->validate([
+            'loginid' => 'required|exists:users,loginid',
+            'password' => 'required',
+        ],
+        [
+            'loginid.required' => 'ログインIDは必須入力です。',
+            'loginid.exists' => '入力されたログインIDが見つかりません。',
+            'password.required' => 'パスワードは必須入力です。',
+        ]);
+
 
         /**
          * 各ユーザーによって変更
