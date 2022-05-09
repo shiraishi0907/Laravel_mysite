@@ -5,42 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Mail\MailController;
+use App\Mail\AdminAuthPageSendMail;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
 use PragmaRX\Google2FA\Google2FA;
 
 class AdminController extends Controller
 {
-    protected function passRehash($data) {
-        $crypt = crypt($data,'$5$rounds=30000$7VRXjNsd93fsy9ci58C1xKu1');
-        return hash_equals($crypt,crypt($data,$crypt));
-    }
-
-    public function adminregister($timestamp,$hash) {
-        $clickTime = time(); 
-        $clickTime = (string) $clickTime;
-
-        $data = $timestamp;
-        $data .= $hash;
-
-        if ($this->passRehash($data)) { //ハッシュが不正なものでないか？
-            if (($clickTime - $timestamp) < 60 * 5) { //5分経ってないか
-                return view('admin.adminregister'); //パスワード設定画面に遷移
-            } else {
-                return redirect('/login'); //パスワード設定申請画面にリダイレクト
-            }
-        } else {
-            return redirect('/login'); //パスワード設定申請画面にリダイレクト
+    public function adminregister(Request $request, User $user) {
+        // URLの有効期限が切れた場合と不正なURLの場合
+        if (!$request->hasValidSignature()) {
+            return redirect()->route('invalidlink');
         }
-    }
-
-    public function adminregistercomplete(Request $request, User $user) {
-        //登録されたら、users tableのレコードのパスワードとuser_value_id(2に変更)を更新し、メールを飛ばす
-        if (!$user->userModelExist('loginid',$request->loginid)) {
-            $user->userModelInsert($request->loginid,NULL,$request->password,$request->email,2); //ここおかしい
-        } else {
-            $user->userModelUpdate('loginid',$request->loginid,'password',$request->password);
-            $user->userModelUpdate('loginid',$request->loginid,'updated_at',now());
-        }
-        return view('admin.adminregister');
+        $userdata['loginid'] = $user->userModelSearch('user_value_id',2,'loginid');
+        $userdata['nickname'] = $user->userModelSearch('user_value_id',2,'nickname');
+        $userdata['email'] = $user->userModelSearch('user_value_id',2,'email');
+        return view('admin.adminregister',compact('userdata'));
     }
 
     public function adminpage() {
@@ -53,9 +33,30 @@ class AdminController extends Controller
 
     //管理者権限付与ページにモーダルで送信完了文言を表示
     public function adminlinkcomplete(Request $request) {
-        $adminlinkdata = $request->all();
-        $mail = new MailController;
-        $mail->mail('adminassignment',NULL,$adminlinkdata["email"],NULL);
+        $email = $request->email;
+
+        $request->validate([
+            'email' => 'required',
+        ],
+        [
+            'email.required' => 'Eメールアドレスは必須入力です。',
+            //'email.unique' => '入力されたEメールアドレスはすでに登録されています。',
+        ]);
+
+        /**
+         * 管理者パスワード設定用画面のURL生成
+         */
+        $urls = [
+            'valid' => URL::temporarySignedRoute(
+                'admin_authpage.valid',
+                now()->addMinutes(1),
+            )
+        ];
+        //dd($urls);
+
+        $mail = new AdminAuthPageSendMail($request,$urls);
+        Mail::to($email)->send($mail);
+
         $setmsg = "管理者用アカウントメールを送信しました。確認ボタンを押下すると、モーダルを閉じます。";
         return response()->json(
             [
@@ -136,7 +137,10 @@ class AdminController extends Controller
 
     public function adminonetimepass(Request $request, User $user) {
         //$this->validator($request->all())->validate();
-        
+        /**
+         * 管理者用のログインID取得
+         */
+        $loginid = $user->userModelSearch('user_value_id',2,'loginid');
         $data = $request->all();
         /**
          * シークレットキー作成
@@ -145,16 +149,14 @@ class AdminController extends Controller
         $request->session()->flash('google2fa_secret', $data);
         $data["google2fa_secret"] = $g2fa->generateSecretKey();
 
-        session(['loginid' => 'account']); //削除
         /**
          * userテーブルの管理者レコード(secret_keyカラム)にシークレットキー登録
          */
-        $user->userModelUpdate('loginid',session('loginid'),'secret_key',$data["google2fa_secret"]);
+        $user->userModelUpdate('loginid',$loginid,'secret_key',$data["google2fa_secret"]);
 
 
-        $users = $user->userModelGet(session('loginid'));
+        $users = $user->userModelGet($loginid);
         foreach ($users as $ur) {
-            $loginid = $ur->loginid;
             $email = $ur->email;
         }
 

@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
+
 
 class LoginController extends Controller
 {
@@ -87,16 +89,33 @@ class LoginController extends Controller
              * 一般ユーザーで登録
              */
             $user->userModelInsert($loginid,$nickname,$password,$email,1);
-            return view('auth.login');
+        /**
+         * 管理者用パスワード設定画面から遷移
+         */
+        } elseif ($request->adminregister) {
+            $password = $request->password;
+
+            $request->validate([
+                'password' => 'required|min:8|confirmed',
+                'password_confirmation' => 'required',
+            ],
+            [
+                'password.confirmed' => 'パスワードとパスワード確認が一致しません。',
+                'password.required' => 'パスワードは必須入力です。',
+                'password_confirmation.required' => 'パスワード確認は必須入力です。',
+            ]);
+
+            $user->userModelUpdate('user_value_id',2,'password',Hash::make($password));
         /**
          * トップページのログインリンクから遷移
          * すでにログインしている場合トップページにリダイレクト
          */
         } else {  
             if (session('loginid')) return redirect('/top');
-
-            return view('auth.login');
         }
+
+        return view('auth.login');
+
     }
 
     public function logout(Request $request) {
@@ -137,6 +156,12 @@ class LoginController extends Controller
                 'loginid.exists' => '入力されたログインIDとパスワードのアカウントが見つかりません。', //直す
                 'password.required' => 'パスワードは必須入力です。',
             ]);
+
+            /**
+             * 管理者でログインした場合、ログインした際の各カラムは更新せず、
+             * 先に二要素認証画面へ遷移(ログインIDをリクエストパラメータとして渡す)、その後各カラムを更新。
+             */
+            if ($user->userModelSearch('loginid',$loginid,'user_value_id') == 2) return redirect('/adminonetimepass');
 
             
             session(['loginid' => $loginid]);

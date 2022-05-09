@@ -6,7 +6,7 @@
 
     @include('block.title')
 
-        <form action="/onetimepass" method="POST">
+        <form action="/top" method="POST">
             @csrf
             <strong class="text-muted">QRコード</strong>
             <div class="form-group">

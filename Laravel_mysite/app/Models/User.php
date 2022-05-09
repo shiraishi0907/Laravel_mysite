@@ -110,10 +110,24 @@ class User extends Authenticatable
                     }
                 }
                 break;
+            case 'nickname':
+                $i = 0;
+                foreach ($output as $op) {
+                    $output[$i] = $op->nickname;
+                    $i++;
+                }
+                break;
             case 'email':
                 $i = 0;
                 foreach ($output as $op) {
                     $output[$i] = $op->email;
+                    $i++;
+                }
+                break;
+            case 'user_value_id':
+                $i = 0;
+                foreach ($output as $op) {
+                    $output[$i] = $op->user_value_id;
                     $i++;
                 }
                 break;

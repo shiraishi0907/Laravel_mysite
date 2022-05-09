@@ -14,25 +14,35 @@ Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
 
 Route::post('/register', 'App\Http\Controllers\Auth\RegisterController@register');
 
-Route::get('/admin_register/{timestamp}/{hash}', 'App\Http\Controllers\AdminController@adminregister');
-
 // ログインIDをお忘れの場合画面
 Route::get('/loginid_reset', 'App\Http\Controllers\Auth\ForgetController@forgetloginid');
 
-// 送信完了画面&メール送信
+// ログインID送信完了画面&メール送信
 Route::post('/loginid_reset/complete', 'App\Http\Controllers\Auth\ForgetController@forgetloginidcomplete');
 
 // パスワードをお忘れの場合画面
 Route::get('/passwd_reset', 'App\Http\Controllers\Auth\ForgetController@forgetpass');
 
-// 送信完了画面&メール送信
+// パスワード送信完了画面&メール送信
 Route::post('/passwd_reset/complete', 'App\Http\Controllers\Auth\ForgetController@forgetpasscomplete');
 
 // リンククリック
 Route::get('/passwd_reset/valid', 'App\Http\Controllers\Mail\MailController@forgetpassmailvalid')->name('passwd_reset.valid');
 
+// 管理者用パスワード設定(新規作成)画面用URL送信
+Route::get('/adminlink', 'App\Http\Controllers\AdminController@adminlink');
+
+// 管理者用パスワード設定完了画面&メール送信
+Route::post('/adminlink/complete', 'App\Http\Controllers\AdminController@adminlinkcomplete');
+
+// リンククリック
+Route::get('/admin_register/valid', 'App\Http\Controllers\AdminController@adminregister')->name('admin_authpage.valid');
+
+// 管理者用パスワード設定完了
+Route::get('/admin_register/complete', 'App\Http\Controllers\AdminController@adminregistercomplete');
+
 // 期限切れ
-Route::get('/passwd_reset/invalid', 'App\Http\Controllers\Mail\MailController@forgetpassmailinvalid')->name('passwd_reset.invalid');
+Route::get('/invalid', 'App\Http\Controllers\Mail\MailController@invalidlink')->name('invalidlink');
 
 Route::get('/attribute', 'App\Http\Controllers\MypageController@attribute');
 
@@ -83,10 +93,6 @@ Route::get('/rankingconfig', 'App\Http\Controllers\PortaltopController@rankingco
 Route::get('/user_search', 'App\Http\Controllers\AdminController@usersearch');
 
 Route::get('/adminpage', 'App\Http\Controllers\AdminController@adminpage');
-
-Route::get('/adminlink', 'App\Http\Controllers\AdminController@adminlink');
-
-Route::post('/adminlink/complete', 'App\Http\Controllers\AdminController@adminlinkcomplete');
 
 Route::post('/user_search/usersearch', 'App\Http\Controllers\AdminController@usersearchAjax');
 
