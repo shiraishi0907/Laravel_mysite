@@ -174,7 +174,7 @@ class MypageController extends Controller
                 $attributeanswer->attributeanswerModelInsert($ans_id);
             }
         }
-        return view('mypage.mypage');
+        return redirect('/mypage');
     }
 
     public function statistics() {
