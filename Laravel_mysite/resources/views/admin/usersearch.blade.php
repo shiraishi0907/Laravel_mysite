@@ -31,7 +31,7 @@
             </div>
                 <div class="form-group">
                     <div class="text-center searchbuttondivclass">
-                        <input onclick="userSearchAjax()" type="button" id="searchbuttonid" class="btn btn-primary btn-block searchbuttonclass" value="検索">
+                        <input onclick="usersearchajax()" type="button" id="searchbuttonid" class="btn btn-primary btn-block searchbuttonclass" value="検索">
                     </div> 
                 </div> 
             </div>

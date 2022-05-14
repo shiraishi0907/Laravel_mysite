@@ -15,9 +15,18 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fa fa-user"></i></span>
                     </div>
-                    <input class="form-control" placeholder="現在のニックネーム" type="text" name="nownickname">
+                    <input class="form-control" placeholder="現在のニックネーム" type="text" name="nownickname" value="{{ $nownickname }}" readonly>
                 </div> 
             </div> 
+            @if($errors->has('nownickname'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('nownickname') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <strong class="text-muted">新しいニックネーム</strong>
             <div class="form-group">
                 <div class="input-group">
@@ -27,6 +36,15 @@
                     <input class="form-control" placeholder="新しいニックネーム" type="text" name="newnickname">
                 </div> 
             </div> 
+            @if($errors->has('newnickname'))
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->get('newnickname') as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
             <div class="form-group">
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary btn-block">変更</button>

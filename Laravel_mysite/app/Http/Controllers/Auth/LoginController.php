@@ -212,7 +212,7 @@ class LoginController extends Controller
         /**
          * モーダル内の質問
          */
-        $contentstop['attributes'] = $attribute->attributeModelGet();
+        $contentstop['attributes'] = $attribute->attributeModelGet('attrpage');
         /**
          * ランキングタイトル、ランキング切り替えの表示
          * ログインしているユーザーが設定しているデフォルト表示を取得

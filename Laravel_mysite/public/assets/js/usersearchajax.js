@@ -1,4 +1,4 @@
-function userSearchAjax() {
+function usersearchajax() {
 
     let logintimes = document.getElementsByName("logintimes");
     let times = document.getElementsByName("times");

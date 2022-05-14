@@ -6,21 +6,22 @@
 
     @include('block.title')
 
-        <form action="/mypage" method="POST">
-            @for ($i = 1;$i <= count($attributes["q_body"]);$i++) 
-                <h4>{{ $attributes["q_body"][$i] }}</h4>
+        <form action="/attributecomplete" method="POST">
+            @csrf
+            @for ($i = 1;$i <= count($attributedata["attributes"]["q_body"]);$i++) 
+                <h4>{{ $attributedata["attributes"]["q_body"][$i] }}</h4>
                 <div class="attribute-word">
-                    @for ($j = 0;$j < count($attributes["q_attribute"][$i]);$j++)
+                    @for ($j = 0;$j < count($attributedata["attributes"]["q_attribute"][$i]);$j++)
                         <div class="form-check form-check-inline">
-                            @if ($attributes["type_id"][$i] == 'text')
-                                <input type="{{ $attributes['type_id'][$i] }}" id="{{ $attributes['attr_id'][$i][$j] }}" value='{{ $attributes["q_attribute"][$i][$j] }}'>
+                            @if ($attributedata["attributes"]["type_id"][$i] == 'text')
+                                <input type="{{ $attributedata['attributes']['type_id'][$i] }}" id="{{ $attributedata['attributes']['attr_id'][$i][$j] }}" name="{{ $attributedata['attributes']['name_id'][$i] }}" value="{{ $attributedata['attrtext'][$i] }}">
                             @else
-                                @if (in_array($attributes['attr_id'][$i][$j],$attrid))
-                                    <input class="form-check-input" type="{{ $attributes['type_id'][$i] }}" id="{{ $attributes['attr_id'][$i][$j] }}" name="{{ $attributes['name_id'][$i] }}" checked>
-                                    <label class="form-check-label" for="{{ $attributes['attr_id'][$i][$j] }}">{{ $attributes["q_attribute"][$i][$j] }}</label>
+                                @if (in_array($attributedata["attributes"]["attr_id"][$i][$j],$attributedata["attrid"]))
+                                    <input class="form-check-input" type="{{ $attributedata['attributes']['type_id'][$i] }}" id="{{ $attributedata['attributes']['attr_id'][$i][$j] }}" name="{{ $attributedata['attributes']['name_id'][$i] }}" value="{{ $attributedata['attributes']['attr_id'][$i][$j] }}" checked>
+                                    <label class="form-check-label" for="{{ $attributedata['attributes']['attr_id'][$i][$j] }}">{{ $attributedata["attributes"]["q_attribute"][$i][$j] }}</label>
                                 @else
-                                    <input class="form-check-input" type="{{ $attributes['type_id'][$i] }}" id="{{ $attributes['attr_id'][$i][$j] }}" name="{{ $attributes['name_id'][$i] }}">
-                                    <label class="form-check-label" for="{{ $attributes['attr_id'][$i][$j] }}">{{ $attributes["q_attribute"][$i][$j] }}</label>
+                                    <input class="form-check-input" type="{{ $attributedata['attributes']['type_id'][$i] }}" id="{{ $attributedata['attributes']['attr_id'][$i][$j] }}" name="{{ $attributedata['attributes']['name_id'][$i] }}" value="{{ $attributedata['attributes']['attr_id'][$i][$j] }}">
+                                    <label class="form-check-label" for="{{ $attributedata['attributes']['attr_id'][$i][$j] }}">{{ $attributedata["attributes"]["q_attribute"][$i][$j] }}</label>
                                 @endif
                             @endif
                         </div>

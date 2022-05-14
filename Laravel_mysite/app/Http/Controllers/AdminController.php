@@ -75,6 +75,10 @@ class AdminController extends Controller
         return view('admin.adminaccount',compact('nickname','loginid','email'));
     }
 
+    /**
+     * usersテーブルの管理者用アカウントのニックネームとEメールアドレスを更新
+     * 更新された後、「設定変更しました。」のメッセージを表示し、更新内容を表示
+     */
     public function adminaccountsetting(Request $request, User $user) {
         $adminaccountdata = $request->all();
         $user->userModelUpdate('loginid',$adminaccountdata["loginid"],'nickname',$adminaccountdata["nickname"]);
@@ -93,7 +97,7 @@ class AdminController extends Controller
         return view('admin.usersearch');
     }
 
-    public function usersearchAjax(Request $request, User $user) {
+    public function usersearchajax(Request $request, User $user) {
         $userword = $request->all();
         $users = $user->userModelWhere($userword['logintimes'],$userword['times']);
         return response()->json(

@@ -46,6 +46,8 @@ Route::get('/invalid', 'App\Http\Controllers\Mail\MailController@invalidlink')->
 
 Route::get('/attribute', 'App\Http\Controllers\MypageController@attribute');
 
+Route::post('/attributecomplete', 'App\Http\Controllers\MypageController@attributecomplete');
+
 Route::get('/work_search', 'App\Http\Controllers\WorkController@worksearch');
 
 Route::post('/work_search/gojuonsearch', 'App\Http\Controllers\WorkController@worksearchAjax');
@@ -94,7 +96,7 @@ Route::get('/user_search', 'App\Http\Controllers\AdminController@usersearch');
 
 Route::get('/adminpage', 'App\Http\Controllers\AdminController@adminpage');
 
-Route::post('/user_search/usersearch', 'App\Http\Controllers\AdminController@usersearchAjax');
+Route::post('/user_search/usersearch', 'App\Http\Controllers\AdminController@usersearchajax');
 
 Route::get('/csv', 'App\Http\Controllers\AdminController@getcsv');
 
@@ -106,7 +108,7 @@ Route::post('/adminaccount/setting', 'App\Http\Controllers\AdminController@admin
 
 Route::post('/mypage/setting', 'App\Http\Controllers\MypageController@mypagesetting');
 
-Route::post('/modal/complete', 'App\Http\Controllers\ModalController@modalcomplete');
+Route::post('/contentstopmodal/complete', 'App\Http\Controllers\ModalController@contentstopmodalcomplete');
 
 Route::post('/workindetail/favorite/add', 'App\Http\Controllers\WorkController@workindetailfavoriteadd');
 

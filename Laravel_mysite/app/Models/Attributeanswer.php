@@ -21,8 +21,15 @@ class Attributeanswer extends Model
         $where = [
             'loginid' => session('loginid')
         ];
-        $attributesid = DB::table('attributeanswers')->
-            Join('attributes','attributeanswers.ans_id','=','attributes.answer_id')->select('attr_id')->where($where)->get();
-        return $attributesid;
+        $attributes = DB::table('attributeanswers')->
+            Join('attributes','attributeanswers.ans_id','=','attributes.answer_id')->where($where)->get();
+        return $attributes;
+    }
+
+    public function attributeanswerModelDelete() {
+        $where = [
+            'loginid' => session('loginid')
+        ];
+        DB::table('attributeanswers')->where($where)->delete();
     }
 }

@@ -33,7 +33,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="新しいパスワードの確認" type="password" name="newpasswordconf">
+                    <input class="form-control" placeholder="新しいパスワードの確認" type="password" name="password_confirmation">
                 </div> 
             </div> 
             <div class="form-group">

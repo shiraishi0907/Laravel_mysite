@@ -138,7 +138,7 @@
         $.ajax({
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
             //DBから検索結果を取得
-            url: "/modal/complete",
+            url: "/contentstopmodal/complete",
             type: "post",
             data: {
                 modals: getchecklist,
@@ -156,7 +156,7 @@
 
     //$('#datepicker').datepicker();
 
-    var gettext = document.querySelector('[id = "datepicker"]');
+    var gettext = document.querySelector('[id = "date"]');
 
     //イベントリスナーを登録 changeはテキストからフォーカスが外れた時に発生、inputはテキストに値を入れるたびに発生
     gettext.addEventListener("input",function(){
