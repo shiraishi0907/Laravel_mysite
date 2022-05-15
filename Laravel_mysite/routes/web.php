@@ -8,6 +8,8 @@ Auth::routes();
 
 Route::match(['get','post'], '/top', 'App\Http\Controllers\Auth\LoginController@contentstop'); 
 
+Route::post('/admincontentstop', 'App\Http\Controllers\AdminController@admincontentstop'); 
+
 Route::get('/login', 'App\Http\Controllers\Auth\LoginController@login');
 
 Route::get('/logout', 'App\Http\Controllers\Auth\LoginController@logout');
@@ -100,7 +102,7 @@ Route::post('/user_search/usersearch', 'App\Http\Controllers\AdminController@use
 
 Route::get('/csv', 'App\Http\Controllers\AdminController@getcsv');
 
-Route::get('/adminonetimepass', 'App\Http\Controllers\AdminController@adminonetimepass');
+Route::get('/adminonetimepass', 'App\Http\Controllers\AdminController@adminonetimepass')->name('adminonetimepass');
 
 Route::get('/adminaccount', 'App\Http\Controllers\AdminController@adminaccount');
 

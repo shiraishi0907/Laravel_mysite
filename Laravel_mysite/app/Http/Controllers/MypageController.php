@@ -12,7 +12,6 @@ use App\Models\Rankingtablesetting;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use stdClass;
 
 class MypageController extends Controller
 {
@@ -32,6 +31,8 @@ class MypageController extends Controller
      * ニックネーム変更完了、usersテーブルへ入力したニックネームを更新
      */
     public function nicknamechangecomplete(Request $request, User $user) {
+
+
         $newnickname = $request->newnickname;
 
         $request->validate([

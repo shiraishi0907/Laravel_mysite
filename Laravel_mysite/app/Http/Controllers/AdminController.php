@@ -6,6 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Mail\MailController;
 use App\Mail\AdminAuthPageSendMail;
+use App\Models\Attribute;
+use App\Models\Printorderjsid;
+use App\Models\Rankingsetting;
+use App\Models\Work;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Mail;
 use PragmaRX\Google2FA\Google2FA;
@@ -140,7 +144,16 @@ class AdminController extends Controller
     }
 
     public function adminonetimepass(Request $request, User $user) {
-        //$this->validator($request->all())->validate();
+        $accountid = $request->accountid;
+        
+        $request->validate([
+            'onetimepass' => 'required',
+        ],
+        [
+            'onetimepass.required' => 'ワンタイムパスワードは必須入力です。',
+        ]);
+
+
         /**
          * 管理者用のログインID取得
          */
@@ -176,6 +189,63 @@ class AdminController extends Controller
 
         $QR_img = 'https://chart.apis.google.com/chart?cht=qr&chs=300x300&chld=LI0&chl='.$opturl;
 
-        return view('admin.adminonetimepass',compact('QR_img'));
+        return view('admin.adminonetimepass',compact('QR_img','accountid'));
+    }
+
+    public function admincontentstop(Request $request, Work $work, User $user, Attribute $attribute, Printorderjsid $printorderjsid, Rankingsetting $rankingsetting) {
+        $accountid = $request->accountid;
+        $user->userModelUpdate('user_value_id',$accountid,'onetime_pass_flag',1);
+
+        $loginid = $user->userModelSearch('user_value_id',$accountid,'loginid');
+        session(['loginid' => $loginid]);
+
+        $users = $user->userModelGet(session('loginid'));
+        foreach ($users as $ur) {
+            $user->userModelUpdate('loginid',session('loginid'),'login_number_of_times',$ur->login_number_of_times + 1);
+            $user->userModelUpdate('loginid',session('loginid'),'last_display_login_time',$ur->next_display_login_time);
+            $user->userModelUpdate('loginid',session('loginid'),'next_display_login_time',date('Y-m-d H:i:s'));
+            $user->userModelUpdate('loginid',session('loginid'),'updated_at',now());
+        }
+
+        /**
+         * おすすめの映画、アニメのタイトル、画像、URL
+         */
+        $workfilms = $work->workModelGet('workfilms',NULL,NULL);
+        $workanimes = $work->workModelGet('workanimes',NULL,NULL);
+
+        $i = 1;
+        foreach ($workfilms as $work) {
+            $contentstop['workfilm_title'][$i] = $work->title;
+            $contentstop['workfilm_img'][$i] = $work->img;
+            $contentstop['workfilm_url'][$i] = $work->url;
+            $i++;
+        }
+
+        $i = 1;
+        foreach ($workanimes as $work) {
+            $contentstop['workanime_title'][$i] = $work->title;
+            $contentstop['workanime_img'][$i] = $work->img;
+            $contentstop['workanime_url'][$i] = $work->url;
+            $i++;
+        }
+
+        /**
+         * モーダル内の質問
+         */
+        $contentstop['attributes'] = $attribute->attributeModelGet('attrpage');
+        /**
+         * ランキングタイトル、ランキング切り替えの表示
+         * ログインしているユーザーが設定しているデフォルト表示を取得
+         * 未ログインユーザーは「全ユーザーのおすすめランキング」をデフォルト表示にする
+         */
+        $rankingsettings = $rankingsetting->rankingsettingFlagModelGet(session('loginid'));
+
+        foreach ($rankingsettings as $rankingsetting) {
+            $contentstop['table_title'] = $rankingsetting->table_title;
+            $contentstop['button_name'] = $rankingsetting->button_name;
+        }
+
+        return view('contentstop',compact('contentstop'));
+
     }
 }

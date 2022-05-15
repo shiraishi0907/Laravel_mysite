@@ -54,13 +54,6 @@
                 <p class="text-center"><a href="/passwd_reset" class="btn">パスワードをお忘れの方</a></p>
                 <p class="text-center"><a href="/register" class="btn">アカウントを作成</a></p>
             </div> 
-
-            <div id="app-2">
-                <span v-bind:title="message">
-                    Hover your mouse over me for a few seconds
-                    to see my dynamically bound title!
-                </span>
-            </div>
         </form>
 
     @include('block.endtitle')

@@ -78,6 +78,7 @@ class User extends Authenticatable
             'last_display_login_time' => '-------',
             'next_display_login_time' => '-------',
             'attr_ans_flag' => 0,
+            'onetime_pass_flag' => 0,
             'created_at' => now(),
             'updated_at' => now(),
         ];

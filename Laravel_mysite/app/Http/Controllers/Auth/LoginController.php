@@ -143,9 +143,12 @@ class LoginController extends Controller
         /**
          * ログイン画面から遷移
          */
-        } elseif ($request->login) {
+        } elseif ($request->login || $request->onepass) {
             $loginid = $request->loginid;
             $password = $request->password;
+            var_dump($loginid);
+            var_dump($request->login);
+            var_dump($request->onepass);
 
             $request->validate([
                 'loginid' => 'required|exists:users,loginid',
@@ -161,7 +164,17 @@ class LoginController extends Controller
              * 管理者でログインした場合、ログインした際の各カラムは更新せず、
              * 先に二要素認証画面へ遷移(ログインIDをリクエストパラメータとして渡す)、その後各カラムを更新。
              */
-            if ($user->userModelSearch('loginid',$loginid,'user_value_id') == 2) return redirect('/adminonetimepass');
+            $accountid = $user->userModelSearch('loginid',$loginid,'user_value_id');
+            $users = $user->userModelGet($loginid);
+            foreach ($users as $ur) {
+                $onepass = $ur->onetime_pass_flag;
+            }
+
+            if ($accountid == 2 && $onepass == 0) { 
+                return redirect()->route('adminonetimepass',['accountid' => $accountid]);
+            }
+
+            //dd($accountid,session('tmp'),session('loginid'));
 
             
             session(['loginid' => $loginid]);
@@ -173,12 +186,12 @@ class LoginController extends Controller
              * next_display_login_time 現在ログイン日時 現在の日時をセット
              * updated_at 更新日
              */
-            $users = $user->userModelGet($loginid);
+            $users = $user->userModelGet(session('loginid'));
             foreach ($users as $ur) {
-                $user->userModelUpdate('loginid',$loginid,'login_number_of_times',$ur->login_number_of_times + 1);
-                $user->userModelUpdate('loginid',$loginid,'last_display_login_time',$ur->next_display_login_time);
-                $user->userModelUpdate('loginid',$loginid,'next_display_login_time',date('Y-m-d H:i:s'));
-                $user->userModelUpdate('loginid',$loginid,'updated_at',now());
+                $user->userModelUpdate('loginid',session('loginid'),'login_number_of_times',$ur->login_number_of_times + 1);
+                $user->userModelUpdate('loginid',session('loginid'),'last_display_login_time',$ur->next_display_login_time);
+                $user->userModelUpdate('loginid',session('loginid'),'next_display_login_time',date('Y-m-d H:i:s'));
+                $user->userModelUpdate('loginid',session('loginid'),'updated_at',now());
             }
         /**
          * トップページ画面のヘッダーから遷移
@@ -218,10 +231,10 @@ class LoginController extends Controller
          * ログインしているユーザーが設定しているデフォルト表示を取得
          * 未ログインユーザーは「全ユーザーのおすすめランキング」をデフォルト表示にする
          */
-        if (session('loginid')) {
-            $rankingsettings = $rankingsetting->rankingsettingFlagModelGet(session('loginid'));
-        } else {
+        if (!session('loginid')) {
             $rankingsettings = $rankingsetting->rankingsettingFlagModelGet('Guest');
+        } else {
+            $rankingsettings = $rankingsetting->rankingsettingFlagModelGet(session('loginid'));
         }
         foreach ($rankingsettings as $rankingsetting) {
             $contentstop['table_title'] = $rankingsetting->table_title;
