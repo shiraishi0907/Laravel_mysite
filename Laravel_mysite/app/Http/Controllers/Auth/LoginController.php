@@ -4,18 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use App\Http\Requests\LoginRequest;
-use App\Models\Rankingsetting;
+use App\Models\Rankingtablesetting;
 use App\Models\Work;
 use App\Models\Attribute;
 use App\Models\Printorderjsid;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
-use Illuminate\Support\Facades\Validator;
+use App\Models\Rankingsetting;
 use Illuminate\Support\Facades\Hash;
 
 
@@ -51,7 +46,7 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function login(Request $request, User $user) {
+    public function login(Request $request, User $user, Rankingtablesetting $rankingtablesetting) {
         //dd(Auth::user());
         /**
          * 新規作成画面から遷移
@@ -85,10 +80,11 @@ class LoginController extends Controller
             ]);
 
             /**
-             * usersテーブルに登録
+             * usersテーブル、rankingsettingtableテーブルに登録
              * 一般ユーザーで登録
              */
             $user->userModelInsert($loginid,$nickname,$password,$email,1);
+            $rankingtablesetting->rankingtablesettingModelInsert($loginid);
         /**
          * 管理者用パスワード設定画面から遷移
          */
