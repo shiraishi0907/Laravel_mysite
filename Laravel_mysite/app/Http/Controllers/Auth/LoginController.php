@@ -104,7 +104,7 @@ class LoginController extends Controller
             $user->userModelUpdate('user_value_id',2,'password',Hash::make($password));
         /**
          * トップページのログインリンクから遷移
-         * すでにログインしている場合トップページにリダイレクト
+         * すでにログインしている場合トップページにリダイレクト。URL直打ちでログイン画面行く場合も考慮済み
          */
         } else {  
             if (session('loginid')) return redirect('/top');
@@ -114,7 +114,8 @@ class LoginController extends Controller
 
     }
 
-    public function logout(Request $request) {
+    public function logout(Request $request, User $user) {
+        $user->userModelUpdate('loginid',session('loginid'),'onetime_pass_flag',0);
         $request->session()->flush();
         return redirect('/top');
     }
@@ -139,7 +140,7 @@ class LoginController extends Controller
         /**
          * ログイン画面から遷移
          */
-        } elseif ($request->login || $request->onepass) {
+        } elseif ($request->login) {
             $loginid = $request->loginid;
             $password = $request->password;
             var_dump($loginid);
@@ -167,12 +168,13 @@ class LoginController extends Controller
             }
 
             if ($accountid == 2 && $onepass == 0) { 
+                var_dump($accountid);
+                var_dump($onepass);
                 return redirect()->route('adminonetimepass',['accountid' => $accountid]);
+                //$admincontroller = app()->make('App\Http\Controllers\AdminController');
+                //$admincontroller->admincontentstop($request,$work,$user,$attribute,$printorderjsid,$rankingsetting,$accountid);
             }
 
-            //dd($accountid,session('tmp'),session('loginid'));
-
-            
             session(['loginid' => $loginid]);
 
             /**
