@@ -144,19 +144,11 @@ class AdminController extends Controller
     }
 
     public function adminonetimepass(Request $request, User $user) {
-        $accountid = $request->accountid;
-        
-        $request->validate([
-            'onetimepass' => 'required',
-        ],
-        [
-            'onetimepass.required' => 'ワンタイムパスワードは必須入力です。',
-        ]);
-
-
         /**
          * 管理者用のログインID取得
+         * URLからaccountidクエリ取得
          */
+        $accountid = request('accountid');
         $loginid = $user->userModelSearch('user_value_id',2,'loginid');
         $data = $request->all();
         /**
@@ -194,6 +186,14 @@ class AdminController extends Controller
 
     public function admincontentstop(Request $request, Work $work, User $user, Attribute $attribute, Printorderjsid $printorderjsid, Rankingsetting $rankingsetting) {
         $accountid = $request->accountid;
+
+        $request->validate([
+            'onetimepass' => 'required',
+        ],
+        [
+            'onetimepass.required' => 'ワンタイムパスワードは必須入力です。',
+        ]);
+
         $user->userModelUpdate('user_value_id',$accountid,'onetime_pass_flag',1);
 
         $loginid = $user->userModelSearch('user_value_id',$accountid,'loginid');
